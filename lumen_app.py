@@ -8,7 +8,7 @@ model = genai.GenerativeModel('gemini-1.5-flash')
 
 st.set_page_config(page_title="Lumen AI", layout="wide", page_icon="🛡️")
 
-# --- UI STYLING (Fixed Typo Here) ---
+# --- UI STYLING (CORRECTED) ---
 st.markdown("""
     <style>
     .main {
@@ -21,7 +21,7 @@ st.markdown("""
         border-radius: 10px;
     }
     </style>
-    """, unsafe_allow_html=True)
+    """, unsafe_allow_html=True) # FIXED: changed index to html
 
 st.title("🛡️ Lumen: Tutor Mode")
 st.write("Your personal engineering entrance exam coach.")
@@ -29,7 +29,7 @@ st.write("Your personal engineering entrance exam coach.")
 st.divider()
 
 # Input area
-topic = st.text_input("Enter a concept to master:", placeholder="e.g. Capacitor in Series")
+topic = st.text_input("Enter a concept to master:", placeholder="e.g. Bernoulli's Principle")
 
 if st.button("Explain to Me"):
     if topic:
