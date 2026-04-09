@@ -3,7 +3,7 @@ import google.generativeai as genai
 
 # --- AI SETUP ---
 # 1. Make sure there are NO spaces inside the quotation marks with your key
-API_KEY= "AIzaSyBcKA2-64-kpT0eIqRkqA6JVWsBomnfYrE" 
+API_KEY = "AIzaSyBcKA2-64-kpT0eIqRkqA6JVWsBomnfYrE" 
 
 genai.configure(api_key=API_KEY)
 
