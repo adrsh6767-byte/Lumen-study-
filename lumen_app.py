@@ -2,18 +2,18 @@ import streamlit as st
 import google.generativeai as genai
 
 # --- AI SETUP ---
-# Using your verified API key
 API_KEY = "AIzaSyBcKA2-64-kpT0eIqRkqA6JVWsBomnfYrE" 
 genai.configure(api_key=API_KEY)
 
-# This is the exact 'stable' model name to avoid 404 errors
-model = genai.GenerativeModel(model_name="gemini-1.5-flash")
+# UPDATED: Using the latest stable model to fix the 404 error
+model_name = "gemini-2.5-flash"
+model = genai.GenerativeModel(model_name)
 
-st.set_page_config(page_title="Lumen AI", layout="wide")
+st.set_page_config(page_title="Lumen AI", layout="wide", page_icon="🛡️")
 
-# Custom Styling for mobile
 st.markdown("""
     <style>
+    .main { background-color: #0e1117; }
     div.stButton > button:first-child {
         background-color: #2e7bcf;
         color: white;
@@ -24,29 +24,34 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 st.title("🛡️ Lumen: Tutor Mode")
-st.write("Personal Coach for JEE & MHT-CET")
+st.write("Your personal engineering entrance exam coach.")
 
-topic = st.text_input("What concept are you studying?", placeholder="e.g. Rotational Dynamics")
+st.divider()
+
+topic = st.text_input("Enter a concept to master:", placeholder="e.g. Rotational Dynamics")
 
 if st.button("Explain to Me"):
     if topic:
-        with st.spinner("Lumen is thinking..."):
+        with st.spinner("Lumen is analyzing..."):
             try:
-                # Direct request to the AI
-                response = model.generate_content(f"Explain {topic} for a JEE/CET student with formulas.")
+                # Custom prompt for your JEE/MHT-CET prep
+                prompt = (f"Explain {topic} for a JEE/MHT-CET student. "
+                          f"Include: 1. Core Concept, 2. Key Formulas, 3. One solved-style example.")
                 
-                st.success(f"Topic: {topic}")
-                st.write(response.text)
+                response = model.generate_content(prompt)
+                st.success(f"Concept: {topic}")
+                st.markdown(response.text)
                 
             except Exception as e:
-                # If it still fails, we try the 'pro' model name as a last resort
+                # Emergency Fallback: If 2.5 fails, it tries the general 'flash' address
                 try:
-                    alt_model = genai.GenerativeModel(model_name="gemini-pro")
-                    response = alt_model.generate_content(topic)
-                    st.write(response.text)
+                    fallback = genai.GenerativeModel("gemini-2.0-flash")
+                    response = fallback.generate_content(topic)
+                    st.markdown(response.text)
                 except:
-                    st.error("Connection still initializing. Wait 2 minutes and try again.")
+                    st.error(f"Error: {e}")
+                    st.info("Check if your API key is fully activated in Google AI Studio.")
     else:
-        st.warning("Please enter a topic!")
+        st.warning("Please enter a topic first!")
 
-st.sidebar.info("Lumen v1.0 - Ready")
+st.sidebar.info("Lumen v2.5 - Stable")
